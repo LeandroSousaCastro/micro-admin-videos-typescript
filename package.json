@@ -1,0 +1,26 @@
+{
+  "name": "micro-videos-typescript",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "workspaces": [
+    "./src/@core",
+    "./src/nestjs"
+  ],
+  "scripts": {
+    "prestart:dev": "npm run build -w @fc/micro-videos",
+    "start:dev": "npm run build:w -w @fc/micro-videos & npm run start:dev -w nestjs",
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/codeedu/micro-admin-videos-typescript.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/codeedu/micro-admin-videos-typescript/issues"
+  },
+  "homepage": "https://github.com/codeedu/micro-admin-videos-typescript#readme"
+}
