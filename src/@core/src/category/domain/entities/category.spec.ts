@@ -58,11 +58,6 @@ describe("Category Unit Tests", () => {
       name: "Movie",
       created_at,
     });
-
-    // expect(category.name).toBe("Movie");
-    // expect(category.description).toBe("some description");
-    // expect(category.is_active).toBeTruthy();
-    // expect(category.created_at).toBe(created_at);
   });
 
   test("id field", () => {

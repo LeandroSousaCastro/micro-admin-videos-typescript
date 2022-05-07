@@ -1,1 +1,4 @@
-GET http://localhost:3001
+GET http://localhost:3000/categories
+
+###
+POST http://localhost:3000/categories

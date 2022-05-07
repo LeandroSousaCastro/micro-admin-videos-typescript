@@ -34,6 +34,3 @@ export class CategoryInMemoryRepository
 }
 
 export default CategoryInMemoryRepository;
-//validação
-//implementar uma ordenação, ordenar por created_at
-//testar filtro + ordenação

@@ -13,6 +13,7 @@ export default {
   coverageDirectory: '../coverage',
   testEnvironment: 'node',
   moduleNameMapper: {
-    '@fc/micro\\-videos/(.*)$': '<rootDir>/../../../node_modules/@fc/micro-videos/dist/$1',
-  }
+    '@fc/micro\\-videos/(.*)$':
+      '<rootDir>/../../../node_modules/@fc/micro-videos/dist/$1',
+  },
 };
