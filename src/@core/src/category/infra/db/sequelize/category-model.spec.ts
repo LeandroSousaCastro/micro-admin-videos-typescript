@@ -1,22 +1,9 @@
+import { setupSequelize } from "#seedwork/infra/testing/helpers/db";
 import { DataType, Sequelize } from "sequelize-typescript";
 import { CategoryModel } from "./category-model";
 
 describe("Category Unit Tests", () => {
-  let sequelize: Sequelize;
-
-  beforeAll(
-    () =>
-      (sequelize = new Sequelize({
-        dialect: "sqlite",
-        host: ":memory:",
-        logging: false,
-        models: [CategoryModel],
-      }))
-  );
-
-  beforeEach(async () => await sequelize.sync({ force: true }));
-
-  afterAll(async () => await sequelize.close());
+  setupSequelize({ models: [CategoryModel] });
 
   test("mapping porps", () => {
     const attributesMap = CategoryModel.getAttributes();

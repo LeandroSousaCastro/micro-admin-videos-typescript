@@ -1,29 +1,16 @@
-import { Sequelize } from "sequelize-typescript";
 import { CategoryModel } from "./category-model";
 import { CategorySequelizeRepository } from "./category-repository";
 import { Category } from "#category/domain";
 import { NotFoundError, UniqueEntityId } from "#seedwork/domain";
+import { setupSequelize } from "#seedwork/infra/testing/helpers/db";
 
 describe("CategoriesSequelizeRepository Unit Test", () => {
-  let sequelize: Sequelize;
+  setupSequelize({ models: [CategoryModel] });
   let repository: CategorySequelizeRepository;
-
-  beforeAll(
-    () =>
-      (sequelize = new Sequelize({
-        dialect: "sqlite",
-        host: ":memory:",
-        logging: false,
-        models: [CategoryModel],
-      }))
-  );
 
   beforeEach(async () => {
     repository = new CategorySequelizeRepository(CategoryModel);
-    await sequelize.sync({ force: true });
   });
-
-  afterAll(async () => await sequelize.close());
 
   it("should insert a new entity", async () => {
     let category = new Category({
@@ -68,5 +55,23 @@ describe("CategoriesSequelizeRepository Unit Test", () => {
 
     entityFound = await repository.findById(entity.uniqueEntityId);
     expect(entity.toJSON()).toStrictEqual(entityFound.toJSON());
+  });
+
+  it("should return all categories", async () => {
+    const arrange = [
+      new Category({ name: "Movie 1" }),
+      new Category({ name: "Movie 2" }),
+    ];
+    arrange.forEach(async (entity) => {
+      await repository.insert(entity);
+    });
+    const entities = await repository.findAll();
+    expect(entities).toHaveLength(2);
+    expect(JSON.stringify(entities)).toBe(JSON.stringify(arrange));
+  });
+
+  it("search", async () => {
+    await CategoryModel.factory().create();
+    // console.log(await CategoryModel.findAll());
   });
 });
