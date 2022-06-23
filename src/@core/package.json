@@ -44,6 +44,7 @@
     "build:w": "tsc -b ./tsconfig.json -w",
     "clean:tsc": "rm tsconfig.tsbuildinfo",
     "test": "jest",
+    "test:in-band": "npm run test -- --runInBand",
     "test:cov": "npm run test -- --coverage",
     "cti": "cti",
     "cti:@core": "sh ./cti.sh"

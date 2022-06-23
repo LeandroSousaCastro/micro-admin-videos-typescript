@@ -7,21 +7,25 @@ const sequelizeOptions: SequelizeOptions = {
 };
 
 export function setupSequelize(options: SequelizeOptions = {}) {
-  let sequelize: Sequelize;
+  let _sequelize: Sequelize;
 
   beforeAll(
     () =>
-      (sequelize = new Sequelize({
+      (_sequelize = new Sequelize({
         ...sequelizeOptions,
         ...options,
       }))
   );
 
   beforeEach(async () => {
-    await sequelize.sync({ force: true });
+    await _sequelize.sync({ force: true });
   });
 
-  afterAll(async () => await sequelize.close());
+  afterAll(async () => await _sequelize.close());
 
-  return { sequelize };
+  return {
+    get sequelize(): Sequelize {
+      return _sequelize;
+    },
+  };
 }
