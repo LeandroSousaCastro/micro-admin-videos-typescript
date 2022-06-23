@@ -9,7 +9,6 @@ import { SequelizeModelFactory } from "./sequelize-model-factory";
 import _chance from "chance";
 import { validate as validateUuid } from "uuid";
 import { setupSequelize } from "../../../../@seedwork/infra/testing/helpers/db";
-import { count } from "console";
 
 const chance = _chance();
 
@@ -28,7 +27,10 @@ class StubModel extends Model {
   }));
 
   static factory() {
-    return new SequelizeModelFactory(StubModel, StubModel.mockFactory);
+    return new SequelizeModelFactory<StubModel, { id: string; name: string }>(
+      StubModel,
+      StubModel.mockFactory
+    );
   }
 }
 
@@ -57,14 +59,14 @@ describe("SequelizeModelFactory Unit Test", () => {
     expect(model.id).toBe(modelFound.id);
   });
 
-  test("Make method", async () => {
-    let model = await StubModel.factory().make();
+  test("Make method", () => {
+    let model = StubModel.factory().make();
     expect(validateUuid(model.id)).toBeTruthy();
     expect(model.id).not.toBeNull();
     expect(model.name).not.toBeNull();
     expect(StubModel.mockFactory).toHaveBeenCalled();
 
-    model = await StubModel.factory().make({
+    model = StubModel.factory().make({
       id: "9366b7dc-2d71-4799-b91c-c64adb205104",
       name: "test",
     });
@@ -114,24 +116,26 @@ describe("SequelizeModelFactory Unit Test", () => {
     expect(models[1].id).toBe(modelFound2.id);
     expect(models[1].name).toBe(modelFound2.name);
 
-    models = await StubModel.factory().count(2).bulkCreate(() => ({
-      id: chance.guid({ version: 4 }),
-      name: "test",
-    }));
+    models = await StubModel.factory()
+      .count(2)
+      .bulkCreate(() => ({
+        id: chance.guid({ version: 4 }),
+        name: "test",
+      }));
     expect(models[0].id).not.toBe(models[1].id);
     expect(models[0].name).toBe("test");
     expect(models[1].name).toBe("test");
     expect(StubModel.mockFactory).toHaveBeenCalledTimes(2);
   });
 
-  test("BulkCreate method using count = 1", async () => {
-    let models = await StubModel.factory().bulkMake();
+  test("BulkCreate method using count = 1", () => {
+    let models = StubModel.factory().bulkMake();
     expect(models).toHaveLength(1);
     expect(models[0].id).not.toBeNull();
     expect(models[0].name).not.toBeNull();
     expect(StubModel.mockFactory).toHaveBeenCalledTimes(1);
 
-    models = await StubModel.factory().bulkMake(() => ({
+    models = StubModel.factory().bulkMake(() => ({
       id: "9366b7dc-2d71-4799-b91c-c64adb205104",
       name: "test",
     }));
@@ -140,8 +144,8 @@ describe("SequelizeModelFactory Unit Test", () => {
     expect(StubModel.mockFactory).toHaveBeenCalledTimes(1);
   });
 
-  test("BulkCreate method using count > 1", async () => {
-    let models = await StubModel.factory().count(2).bulkMake();
+  test("BulkCreate method using count > 1", () => {
+    let models = StubModel.factory().count(2).bulkMake();
     expect(models).toHaveLength(2);
     expect(models[0].id).not.toBeNull();
     expect(models[0].name).not.toBeNull();
@@ -149,10 +153,12 @@ describe("SequelizeModelFactory Unit Test", () => {
     expect(models[1].name).not.toBeNull();
     expect(StubModel.mockFactory).toHaveBeenCalledTimes(2);
 
-    models = await StubModel.factory().count(2).bulkMake(() => ({
-      id: chance.guid({ version: 4 }),
-      name: "test",
-    }));
+    models = StubModel.factory()
+      .count(2)
+      .bulkMake(() => ({
+        id: chance.guid({ version: 4 }),
+        name: "test",
+      }));
     expect(models[0].id).not.toBe(models[1].id);
     expect(models[0].name).toBe("test");
     expect(models[1].name).toBe("test");
