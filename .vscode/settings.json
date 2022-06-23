@@ -2,7 +2,8 @@
     "peacock.remoteColor": "#215732",
     "conventionalCommits.scopes": [
         "devcontainer.json",
-        "settings.json"
+        "settings.json",
+        "Model Factory"
     ],
     "workbench.colorCustomizations": {
         "activityBar.activeBackground": "#2f7c47",
