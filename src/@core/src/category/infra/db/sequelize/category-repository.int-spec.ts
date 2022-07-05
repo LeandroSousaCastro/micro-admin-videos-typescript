@@ -1,19 +1,17 @@
-import { CategoryModel } from "./category-model";
-import { CategorySequelizeRepository } from "./category-repository";
+import { CategorySequelize } from "./category-sequelize";
 import { Category, CategoryRepository } from "#category/domain";
 import { NotFoundError, UniqueEntityId } from "#seedwork/domain";
 import { setupSequelize } from "#seedwork/infra/testing/helpers/db";
 import _chance from "chance";
-import { CategoryModelMapper } from "./category-mapper";
 
-describe("CategoriesSequelizeRepository Unit Test", () => {
+const { CategoryModel, CategorySequelizeRepository, CategoryModelMapper } =
+  CategorySequelize;
+
+const chance = _chance();
+
+describe("CategoriesSequelizeRepository Integration Test", () => {
   setupSequelize({ models: [CategoryModel] });
-  let repository: CategorySequelizeRepository;
-  let chance = _chance();
-
-  beforeAll(() => {
-    chance = _chance();
-  });
+  let repository: CategorySequelize.CategorySequelizeRepository;
 
   beforeEach(async () => {
     repository = new CategorySequelizeRepository(CategoryModel);
@@ -75,6 +73,48 @@ describe("CategoriesSequelizeRepository Unit Test", () => {
     const entities = await repository.findAll();
     expect(entities).toHaveLength(2);
     expect(JSON.stringify(entities)).toBe(JSON.stringify(arrange));
+  });
+
+  it("should throw error on update when a entity not found", async () => {
+    const entity = new Category({ name: "Test" });
+    await expect(repository.update(entity)).rejects.toThrow(
+      new NotFoundError(`Entity Not Found using ID ${entity.id}`)
+    );
+  });
+
+  it("should update a entity", async () => {
+    const entity = new Category({ name: "Test" });
+    await repository.insert(entity);
+
+    entity.update("Test 2", entity.description);
+    await repository.update(entity);
+    let entityFound = await repository.findById(entity.id);
+    expect(entity.toJSON()).toStrictEqual(entityFound.toJSON());
+  });
+
+  it("should throw error on delete when a entity not found", async () => {
+    await expect(repository.delete("fake id")).rejects.toThrow(
+      new NotFoundError("Entity Not Found using ID fake id")
+    );
+
+    await expect(
+      repository.delete(
+        new UniqueEntityId("9366b7dc-2d71-4799-b91c-c64adb205104")
+      )
+    ).rejects.toThrow(
+      new NotFoundError(
+        `Entity Not Found using ID 9366b7dc-2d71-4799-b91c-c64adb205104`
+      )
+    );
+  });
+
+  it("should delete a entity", async () => {
+    const entity = new Category({ name: "Test" });
+    await repository.insert(entity);
+
+    await repository.delete(entity.id);
+    const entityFound = await CategoryModel.findByPk(entity.id);
+    expect(entityFound).toBeNull();
   });
 
   describe("search method tests", () => {
@@ -296,6 +336,72 @@ describe("CategoriesSequelizeRepository Unit Test", () => {
         let result = await repository.search(i.params);
         expect(result.toJSON(true)).toMatchObject(i.result.toJSON(true));
       }
+    });
+
+    describe("should search using filter, sort and paginate", () => {
+      const defaultProps = {
+        description: null,
+        is_active: true,
+        created_at: new Date(),
+      };
+
+      const categoriesProps = [
+        { id: chance.guid({ version: 4 }), name: "test", ...defaultProps },
+        { id: chance.guid({ version: 4 }), name: "a", ...defaultProps },
+        { id: chance.guid({ version: 4 }), name: "TEST", ...defaultProps },
+        { id: chance.guid({ version: 4 }), name: "e", ...defaultProps },
+        { id: chance.guid({ version: 4 }), name: "TeSt", ...defaultProps },
+      ];
+      let arrange = [
+        {
+          search_params: new CategoryRepository.SearchParams({
+            page: 1,
+            per_page: 2,
+            sort: "name",
+            filter: "TEST",
+          }),
+          search_result: new CategoryRepository.SearchResult({
+            items: [
+              new Category(categoriesProps[2]),
+              new Category(categoriesProps[4]),
+            ],
+            total: 3,
+            current_page: 1,
+            per_page: 2,
+            sort: "name",
+            sort_dir: "asc",
+            filter: "TEST",
+          }),
+        },
+        {
+          search_params: new CategoryRepository.SearchParams({
+            page: 2,
+            per_page: 2,
+            sort: "name",
+            filter: "TEST",
+          }),
+          search_result: new CategoryRepository.SearchResult({
+            items: [new Category(categoriesProps[0])],
+            total: 3,
+            current_page: 2,
+            per_page: 2,
+            sort: "name",
+            sort_dir: "asc",
+            filter: "TEST",
+          }),
+        },
+      ];
+      beforeEach(async () => {
+        await CategoryModel.bulkCreate(categoriesProps);
+      });
+
+      test.each(arrange)(
+        "when value is $search_params",
+        async ({ search_params, search_result }) => {
+          let result = await repository.search(search_params);
+          expect(result.toJSON(true)).toMatchObject(search_result.toJSON(true));
+        }
+      );
     });
   });
 });

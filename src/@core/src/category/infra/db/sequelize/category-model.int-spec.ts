@@ -1,8 +1,10 @@
 import { setupSequelize } from "#seedwork/infra/testing/helpers/db";
-import { DataType, Sequelize } from "sequelize-typescript";
-import { CategoryModel } from "./category-model";
+import { DataType } from "sequelize-typescript";
+import { CategorySequelize } from "./category-sequelize";
 
-describe("Category Unit Tests", () => {
+const { CategoryModel } = CategorySequelize;
+
+describe("Category Int Tests", () => {
   setupSequelize({ models: [CategoryModel] });
 
   test("mapping porps", () => {
