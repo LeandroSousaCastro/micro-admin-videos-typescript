@@ -1,4 +1,4 @@
-import { CategorySequelize } from "./category-sequelize";
+import { CategorySequelize } from "../category-sequelize";
 import { Category, CategoryRepository } from "#category/domain";
 import { NotFoundError, UniqueEntityId } from "#seedwork/domain";
 import { setupSequelize } from "#seedwork/infra/testing/helpers/db";

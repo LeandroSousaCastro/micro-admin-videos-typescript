@@ -1,13 +1,13 @@
 import { setupSequelize } from "#seedwork/infra/testing/helpers/db";
 import { DataType } from "sequelize-typescript";
-import { CategorySequelize } from "./category-sequelize";
+import { CategorySequelize } from "../category-sequelize";
 
 const { CategoryModel } = CategorySequelize;
 
 describe("Category Int Tests", () => {
   setupSequelize({ models: [CategoryModel] });
 
-  test("mapping porps", () => {
+  test("mapping props", () => {
     const attributesMap = CategoryModel.getAttributes();
     const attributes = Object.keys(CategoryModel.getAttributes());
     expect(attributes).toStrictEqual([
