@@ -3,16 +3,16 @@ import NotFoundError from "../../../../../@seedwork/domain/errors/not-found.erro
 import { CategorySequelize } from "#category/infra/db/sequelize/category-sequelize";
 import { setupSequelize } from "#seedwork/infra/testing/helpers/db";
 
-const { CategorySequelizeRepository, CategoryModel } = CategorySequelize;
+const { CategoryRepository, CategoryModel } = CategorySequelize;
 
 describe("DeleteCategoryUseCase Unit Tests", () => {
   let useCase: DeleteCategoryUseCase.UseCase;
-  let repository: CategorySequelize.CategorySequelizeRepository;
+  let repository: CategorySequelize.CategoryRepository;
 
   setupSequelize({ models: [CategoryModel] });
 
   beforeEach(() => {
-    repository = new CategorySequelizeRepository(CategoryModel);
+    repository = new CategoryRepository(CategoryModel);
     useCase = new DeleteCategoryUseCase.UseCase(repository);
   });
 

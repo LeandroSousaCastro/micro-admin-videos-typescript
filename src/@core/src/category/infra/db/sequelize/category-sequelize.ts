@@ -12,7 +12,10 @@ import {
   LoadEntityError,
   EntityValidationError,
 } from "#seedwork/domain";
-import { CategoryRepository, Category } from "#category/domain";
+import {
+  CategoryRepository as CategoryRepositoryContract,
+  Category,
+} from "#category/domain";
 import { Op } from "sequelize";
 
 export namespace CategorySequelize {
@@ -57,8 +60,8 @@ export namespace CategorySequelize {
     }
   }
 
-  export class CategorySequelizeRepository
-    implements CategoryRepository.Repository
+  export class CategoryRepository
+    implements CategoryRepositoryContract.Repository
   {
     sortableFields: string[] = ["name", "created_at"];
 
@@ -99,8 +102,8 @@ export namespace CategorySequelize {
     }
 
     async search(
-      props: CategoryRepository.SearchParams
-    ): Promise<CategoryRepository.SearchResult> {
+      props: CategoryRepositoryContract.SearchParams
+    ): Promise<CategoryRepositoryContract.SearchResult> {
       const offset = (props.page - 1) * props.per_page;
       const limit = props.per_page;
       const { rows: models, count } = await this.categoryModel.findAndCountAll({
@@ -113,7 +116,7 @@ export namespace CategorySequelize {
         offset,
         limit,
       });
-      return new CategoryRepository.SearchResult({
+      return new CategoryRepositoryContract.SearchResult({
         items: models.map(CategoryModelMapper.toEntity),
         current_page: props.page,
         per_page: props.per_page,

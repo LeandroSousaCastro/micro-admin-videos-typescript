@@ -5,16 +5,16 @@ import { Category } from "../../../../domain/entities/category";
 import { CategorySequelize } from "#category/infra/db/sequelize/category-sequelize";
 import { setupSequelize } from "#seedwork/infra/testing/helpers/db";
 
-const { CategorySequelizeRepository, CategoryModel } = CategorySequelize;
+const { CategoryRepository, CategoryModel } = CategorySequelize;
 
 describe("GetCategoryUseCase integration Tests", () => {
   let useCase: GetCategoryUseCase.UseCase;
-  let repository: CategorySequelize.CategorySequelizeRepository;
+  let repository: CategorySequelize.CategoryRepository;
 
   setupSequelize({ models: [CategoryModel] });
 
   beforeEach(() => {
-    repository = new CategorySequelizeRepository(CategoryModel);
+    repository = new CategoryRepository(CategoryModel);
     useCase = new GetCategoryUseCase.UseCase(repository);
   });
 
