@@ -1,7 +1,7 @@
 GET http://localhost:3000/categories
 
 ###
-GET http://localhost:3000/categories/b4452093-964b-4ab8-9876-74da32ced784
+GET http://localhost:3000/categories/ead073a5-096c-4eb3-ae67-73b32b5c9b48
 
 ###
 POST http://localhost:3000/categories
