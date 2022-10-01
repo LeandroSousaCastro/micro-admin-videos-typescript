@@ -27,6 +27,8 @@
   "homepage": "https://github.com/codeedu/micro-admin-videos-typescript#readme",
   "dependencies": {
     "@nestjs/config": "^2.2.0",
+    "@swc/core": "^1.3.4",
+    "@swc/jest": "^0.2.23",
     "nestjs": "^0.0.1"
   }
 }
