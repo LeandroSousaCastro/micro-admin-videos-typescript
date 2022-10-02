@@ -1,10 +1,10 @@
 {
     "peacock.remoteColor": "#215732",
     "conventionalCommits.scopes": [
-        "devcontainer.json",
-        "settings.json",
-        "Model Factory",
-        "nest"
+        "model factory",
+        "nest",
+        "core",
+        "core test"
     ],
     "workbench.colorCustomizations": {
         "activityBar.activeBorder": "#422c74",
