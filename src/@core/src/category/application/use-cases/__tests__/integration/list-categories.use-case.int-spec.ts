@@ -34,6 +34,7 @@ describe("ListCategoriesUseCase Integration Tests", () => {
     const output = await useCase.execute({});
     expect(output).toMatchObject({
       items: [...models]
+        .reverse()
         .map(CategorySequelize.CategoryModelMapper.toEntity)
         .map((entity) => entity.toJSON()),
       total: 2,

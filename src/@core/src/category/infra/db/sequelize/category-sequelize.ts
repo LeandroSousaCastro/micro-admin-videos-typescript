@@ -68,7 +68,11 @@ export namespace CategorySequelize {
     constructor(private categoryModel: typeof CategoryModel) {}
 
     async insert(entity: Category): Promise<void> {
-      await CategoryModel.create(entity.toJSON());
+      await this.categoryModel.create(entity.toJSON());
+    }
+
+    async bulkInsert(entities: Category[]): Promise<void> {
+      await this.categoryModel.bulkCreate(entities.map((e) => e.toJSON()));
     }
 
     async findById(id: string | UniqueEntityId): Promise<Category> {
@@ -79,7 +83,7 @@ export namespace CategorySequelize {
 
     async findAll(): Promise<Category[]> {
       const models = await this.categoryModel.findAll();
-      return models.map(CategoryModelMapper.toEntity);
+      return models.map((m) => CategoryModelMapper.toEntity(m));
     }
 
     async update(entity: Category): Promise<void> {
@@ -95,7 +99,7 @@ export namespace CategorySequelize {
       this.categoryModel.destroy({ where: { id: _id } });
     }
 
-    private async _get(id: string) {
+    private async _get(id: string): Promise<CategoryModel> {
       return this.categoryModel.findByPk(id, {
         rejectOnEmpty: new NotFoundError(`Entity Not Found using ID ${id}`),
       });
@@ -112,12 +116,12 @@ export namespace CategorySequelize {
         }),
         ...(props.sort && this.sortableFields.includes(props.sort)
           ? { order: [[props.sort, props.sort_dir]] }
-          : [["created_at", "DESC"]]),
+          : { order: [["created_at", "DESC"]] }),
         offset,
         limit,
       });
       return new CategoryRepositoryContract.SearchResult({
-        items: models.map(CategoryModelMapper.toEntity),
+        items: models.map((m) => CategoryModelMapper.toEntity(m)),
         current_page: props.page,
         per_page: props.per_page,
         total: count,

@@ -12,6 +12,8 @@ import {
 } from '@fc/micro-videos/category/application';
 import { CategoryRepository } from '@fc/micro-videos/category/domain';
 import { CATEGORY_PROVIDERS } from '../../category.providers';
+import { CategorySequelize } from '@fc/micro-videos/category/infra';
+import { NotFoundError } from '@fc/micro-videos/@seedwork/domain';
 
 describe('CategoriesController Integration Tests', () => {
   let controller: CategoriesController;
@@ -51,7 +53,7 @@ describe('CategoriesController Integration Tests', () => {
         request: {
           name: 'Test',
         },
-        expectOutput: {
+        expectPresenter: {
           name: 'Test',
           description: null,
           is_active: true,
@@ -62,7 +64,7 @@ describe('CategoriesController Integration Tests', () => {
           name: 'Test',
           description: 'Test description',
         },
-        expectOutput: {
+        expectPresenter: {
           name: 'Test',
           description: 'Test description',
           is_active: true,
@@ -74,7 +76,7 @@ describe('CategoriesController Integration Tests', () => {
           description: 'Test description',
           is_active: false,
         },
-        expectOutput: {
+        expectPresenter: {
           name: 'Test',
           description: 'Test description',
           is_active: false,
@@ -85,7 +87,7 @@ describe('CategoriesController Integration Tests', () => {
           name: 'Test',
           is_active: false,
         },
-        expectOutput: {
+        expectPresenter: {
           name: 'Test',
           description: null,
           is_active: false,
@@ -95,23 +97,146 @@ describe('CategoriesController Integration Tests', () => {
 
     test.each(arrange)(
       'with request $request',
-      async ({ request, expectOutput }) => {
-        const output = await controller.create(request);
-        const entity = await repository.findById(output.id);
+      async ({ request, expectPresenter }) => {
+        const presenter = await controller.create(request);
+        const entity = await repository.findById(presenter.id);
         expect(entity).toMatchObject({
-          id: output.id,
-          name: expectOutput.name,
-          description: expectOutput.description,
-          is_active: expectOutput.is_active,
-          created_at: output.created_at,
+          id: presenter.id,
+          name: expectPresenter.name,
+          description: expectPresenter.description,
+          is_active: expectPresenter.is_active,
+          created_at: presenter.created_at,
         });
 
-        expect(output.id).toBe(entity.id);
-        expect(output.name).toBe(expectOutput.name);
-        expect(output.description).toBe(expectOutput.description);
-        expect(output.is_active).toBe(expectOutput.is_active);
-        expect(output.created_at).toStrictEqual(entity.created_at);
+        expect(presenter.id).toBe(entity.id);
+        expect(presenter.name).toBe(expectPresenter.name);
+        expect(presenter.description).toBe(expectPresenter.description);
+        expect(presenter.is_active).toBe(expectPresenter.is_active);
+        expect(presenter.created_at).toStrictEqual(entity.created_at);
       },
     );
+  });
+
+  describe('should update a category', () => {
+    let category: CategorySequelize.CategoryModel;
+
+    beforeEach(async () => {
+      category = await CategorySequelize.CategoryModel.factory().create();
+    });
+
+    const arrange = [
+      {
+        categoryProps: {
+          name: 'Test name',
+        },
+        request: {
+          name: 'Test',
+        },
+        expectPresenter: {
+          name: 'Test',
+          description: null,
+          is_active: true,
+        },
+      },
+      {
+        categoryProps: {
+          name: 'Test name',
+        },
+        request: {
+          name: 'Test',
+          description: 'Test description',
+        },
+        expectPresenter: {
+          name: 'Test',
+          description: 'Test description',
+          is_active: true,
+        },
+      },
+      {
+        categoryProps: {
+          name: 'Test name',
+        },
+        request: {
+          name: 'Test',
+          description: 'Test description',
+          is_active: false,
+        },
+        expectPresenter: {
+          name: 'Test',
+          description: 'Test description',
+          is_active: false,
+        },
+      },
+      {
+        categoryProps: {
+          name: 'Test name',
+        },
+        request: {
+          name: 'Test',
+          is_active: false,
+        },
+        expectPresenter: {
+          name: 'Test',
+          description: null,
+          is_active: false,
+        },
+      },
+      {
+        categoryProps: {
+          name: 'Test name',
+          is_active: false,
+        },
+        request: {
+          name: 'Test',
+          is_active: true,
+        },
+        expectPresenter: {
+          name: 'Test',
+          description: null,
+          is_active: true,
+        },
+      },
+    ];
+
+    test.each(arrange)(
+      'with request $request',
+      async ({ categoryProps, request, expectPresenter }) => {
+        await category.update(categoryProps);
+        const presenter = await controller.update(category.id, request);
+        const entity = await repository.findById(presenter.id);
+        expect(entity).toMatchObject({
+          id: presenter.id,
+          name: expectPresenter.name,
+          description: expectPresenter.description,
+          is_active: expectPresenter.is_active,
+          created_at: presenter.created_at,
+        });
+
+        expect(presenter.id).toBe(entity.id);
+        expect(presenter.name).toBe(expectPresenter.name);
+        expect(presenter.description).toBe(expectPresenter.description);
+        expect(presenter.is_active).toBe(expectPresenter.is_active);
+        expect(presenter.created_at).toStrictEqual(entity.created_at);
+      },
+    );
+  });
+
+  it('should delete a category', async () => {
+    const category = await CategorySequelize.CategoryModel.factory().create();
+    const response = await controller.remove(category.id);
+    expect(response).not.toBeDefined();
+    await expect(repository.findById(category.id)).rejects.toThrow(
+      new NotFoundError(`Entity Not Found using ID ${category.id}`),
+    );
+  });
+
+  it('should get a category', async () => {
+    const category = await CategorySequelize.CategoryModel.factory().create();
+    const presenter = await controller.findOne(category.id);
+    expect(presenter.id).toBe(category.id);
+    expect(presenter.name).toBe(category.name);
+    expect(presenter.description).toBe(category.description);
+    expect(presenter.is_active).toBe(category.is_active);
+    expect(presenter.created_at).toStrictEqual(category.created_at);
   });
 });
