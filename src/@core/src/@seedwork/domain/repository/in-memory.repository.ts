@@ -1,4 +1,3 @@
-import { Category } from "category/domain/entities/category";
 import Entity from "../entity/entity";
 import NotFoundError from "../errors/not-found.error";
 import UniqueEntityId from "../value-objects/unique-entity-id.vo";
@@ -17,6 +16,10 @@ export abstract class InMemoryRepository<E extends Entity>
 
   async insert(entity: E): Promise<void> {
     this.items.push(entity);
+  }
+
+  async bulkInsert(entities: E[]): Promise<void> {
+    this.items.push(...entities);
   }
 
   async findById(id: string | UniqueEntityId): Promise<E> {

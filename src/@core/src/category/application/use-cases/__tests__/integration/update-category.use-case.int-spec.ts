@@ -1,14 +1,19 @@
-import {UpdateCategoryUseCase} from "../../update-category.use-case";
-import CategoryInMemoryRepository from "../../../../infra/db/in-memory/category-in-memory.repository";
+import { UpdateCategoryUseCase } from "../../update-category.use-case";\
 import NotFoundError from "../../../../../@seedwork/domain/errors/not-found.error";
-import { Category } from "../../../../domain/entities/category";
+import { CategoryFakeBuilder } from "#category/domain/entities/category-fake-builder";
+import { setupSequelize } from "#seedwork/infra";
+import { CategorySequelize } from "#category/infra";
+
+const { CategoryRepository, CategoryModel } = CategorySequelize;
 
 describe("UpdateCategoryUseCase Integration Tests", () => {
   let useCase: UpdateCategoryUseCase.UseCase;
-  let repository: CategoryInMemoryRepository;
+  let repository: CategorySequelize.CategoryRepository;
+
+  setupSequelize({ models: [CategoryModel] });
 
   beforeEach(() => {
-    repository = new CategoryInMemoryRepository();
+    repository = new CategoryRepository(CategoryModel);
     useCase = new UpdateCategoryUseCase.UseCase(repository);
   });
 
@@ -19,9 +24,10 @@ describe("UpdateCategoryUseCase Integration Tests", () => {
   });
 
   it("should update a category", async () => {
+    const entity = CategoryFakeBuilder.aCategory().build();
     const spyUpdate = jest.spyOn(repository, "update");
-    const entity = new Category({ name: "Movie" });
-    repository.items = [entity];
+
+    repository.insert(entity);
 
     let output = await useCase.execute({ id: entity.id, name: "test" });
     expect(spyUpdate).toHaveBeenCalledTimes(1);
@@ -32,7 +38,7 @@ describe("UpdateCategoryUseCase Integration Tests", () => {
       is_active: true,
       created_at: entity.created_at,
     });
-    
+
     type Arrange = {
       input: {
         id: string;
