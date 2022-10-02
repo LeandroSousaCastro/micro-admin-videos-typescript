@@ -1,8 +1,8 @@
-import { UpdateCategoryUseCase } from "../../update-category.use-case";\
+import { UpdateCategoryUseCase } from "../../update-category.use-case";
 import NotFoundError from "../../../../../@seedwork/domain/errors/not-found.error";
-import { CategoryFakeBuilder } from "#category/domain/entities/category-fake-builder";
 import { setupSequelize } from "#seedwork/infra";
 import { CategorySequelize } from "#category/infra";
+import { Category } from "#category/domain";
 
 const { CategoryRepository, CategoryModel } = CategorySequelize;
 
@@ -24,7 +24,7 @@ describe("UpdateCategoryUseCase Integration Tests", () => {
   });
 
   it("should update a category", async () => {
-    const entity = CategoryFakeBuilder.aCategory().build();
+    const entity = Category.fake().aCategory().build();
     const spyUpdate = jest.spyOn(repository, "update");
 
     repository.insert(entity);

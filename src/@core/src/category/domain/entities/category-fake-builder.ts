@@ -12,7 +12,7 @@ export class CategoryFakeBuilder<TBuild = any> {
     this.chance.paragraph();
   private _is_active: PropOrFactory<boolean> = (_index) => true;
   private _created_at = undefined;
-
+  private chance: Chance.Chance;
   private countObjs;
 
   static aCategory() {
@@ -22,8 +22,6 @@ export class CategoryFakeBuilder<TBuild = any> {
   static theCategories(countObjs: number) {
     return new CategoryFakeBuilder<Category[]>(countObjs);
   }
-
-  private chance: Chance.Chance;
 
   private constructor(countObjs: number = 1) {
     this.countObjs = countObjs;

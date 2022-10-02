@@ -2,7 +2,7 @@ import { ListCategoriesUseCase } from "../../list-categories.use-case";
 import { CategorySequelize } from "#category/infra/db/sequelize/category-sequelize";
 import { setupSequelize } from "#seedwork/infra/testing/helpers/db";
 import _chance from "chance";
-import { CategoryFakeBuilder } from "#category/domain/entities/category-fake-builder";
+import { Category } from "#category/domain";
 
 const { CategoryRepository, CategoryModel } = CategorySequelize;
 
@@ -18,7 +18,7 @@ describe("ListCategoriesUseCase Integration Tests", () => {
   });
 
   it("should return output using empty input with categories ordered by created_at", async () => {
-    const faker = CategoryFakeBuilder.theCategories(2);
+    const faker = Category.fake().theCategories(2);
 
     const entities = faker
       .withName((index) => `category ${index}`)
@@ -38,7 +38,7 @@ describe("ListCategoriesUseCase Integration Tests", () => {
   });
 
   it("should returns output using pagination, sort and filter", async () => {
-    const faker = CategoryFakeBuilder.aCategory();
+    const faker = Category.fake().aCategory();
     const entities = [
       faker.withName("a").build(),
       faker.withName("AAA").build(),
