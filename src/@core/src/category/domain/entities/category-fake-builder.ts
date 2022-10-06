@@ -4,15 +4,16 @@ import { UniqueEntityId } from "../../../@seedwork/domain";
 
 type PropOrFactory<T> = T | ((index: number) => T);
 
-// Test Data Builder Pattern
 export class CategoryFakeBuilder<TBuild = any> {
+  // auto generated in entity
   private _unique_entity_id = undefined;
   private _name: PropOrFactory<string> = (_index) => this.chance.word();
   private _description: PropOrFactory<string | null> = (_index) =>
     this.chance.paragraph();
   private _is_active: PropOrFactory<boolean> = (_index) => true;
+  // auto generated in entity
   private _created_at = undefined;
-  private chance: Chance.Chance;
+
   private countObjs;
 
   static aCategory() {
@@ -22,6 +23,8 @@ export class CategoryFakeBuilder<TBuild = any> {
   static theCategories(countObjs: number) {
     return new CategoryFakeBuilder<Category[]>(countObjs);
   }
+
+  private chance: Chance.Chance;
 
   private constructor(countObjs: number = 1) {
     this.countObjs = countObjs;
