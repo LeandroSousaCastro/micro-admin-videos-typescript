@@ -20,7 +20,10 @@ import {
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { SearchCategoryDto } from './dto/search-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
-import { CategoryPresenter } from './presenter/category.presenter';
+import {
+  CategoryCollectionPresenter,
+  CategoryPresenter,
+} from './presenter/category.presenter';
 
 @Controller('categories')
 export class CategoriesController {
@@ -39,6 +42,7 @@ export class CategoriesController {
   @Inject(ListCategoriesUseCase.UseCase)
   private listUseCase: ListCategoriesUseCase.UseCase;
 
+  //Arquitetura Hexagonal - Ports
   @Post()
   async create(@Body() createCategoryDto: CreateCategoryDto) {
     const output = await this.createUseCase.execute(createCategoryDto);
@@ -46,8 +50,9 @@ export class CategoriesController {
   }
 
   @Get()
-  search(@Query() searchParams: SearchCategoryDto) {
-    return this.listUseCase.execute(searchParams);
+  async search(@Query() searchParams: SearchCategoryDto) {
+    const output = await this.listUseCase.execute(searchParams);
+    return new CategoryCollectionPresenter(output);
   }
 
   @Get(':id')
@@ -56,7 +61,7 @@ export class CategoriesController {
     return new CategoryPresenter(output);
   }
 
-  @Put(':id') //PUT vs PATCH
+  @Put(':id')
   async update(
     @Param('id') id: string,
     @Body() updateCategoryDto: UpdateCategoryDto,

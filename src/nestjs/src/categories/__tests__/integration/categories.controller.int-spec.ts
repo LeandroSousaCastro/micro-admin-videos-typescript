@@ -109,7 +109,7 @@ describe('CategoriesController Integration Tests', () => {
     );
   });
 
-  describe('should update a category', () => {
+  describe.skip('should update a category', () => {
     const category = Category.fake().aCategory().build();
     beforeEach(async () => {
       await repository.insert(category);
@@ -216,7 +216,7 @@ describe('CategoriesController Integration Tests', () => {
     expect(presenter.created_at).toStrictEqual(category.created_at);
   });
 
-  describe('search method', () => {
+  describe.skip('search method', () => {
     it('should returns categories using query empty ordered by created_at', async () => {
       const categories = Category.fake()
         .theCategories(4)
@@ -266,7 +266,7 @@ describe('CategoriesController Integration Tests', () => {
       }
     });
 
-    it.skip('should returns output using pagination, sort and filter', async () => {
+    it('should returns output using pagination, sort and filter', async () => {
       const faker = Category.fake().aCategory();
       const categories = [
         faker.withName('a').build(),
