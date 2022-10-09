@@ -54,32 +54,32 @@ describe('CategoriesController Integration Tests', () => {
     const arrange = [
       {
         request: {
-          name: 'Movie',
+          name: 'Test',
         },
         expectedPresenter: {
-          name: 'Movie',
+          name: 'Test',
           description: null,
           is_active: true,
         },
       },
       {
         request: {
-          name: 'Movie',
+          name: 'Test',
           description: null,
         },
         expectedPresenter: {
-          name: 'Movie',
+          name: 'Test',
           description: null,
           is_active: true,
         },
       },
       {
         request: {
-          name: 'Movie',
+          name: 'Test',
           is_active: true,
         },
         expectedPresenter: {
-          name: 'Movie',
+          name: 'Test',
           description: null,
           is_active: true,
         },
@@ -117,55 +117,55 @@ describe('CategoriesController Integration Tests', () => {
     const arrange = [
       {
         request: {
-          name: 'Movie',
+          name: 'Test',
         },
         expectedPresenter: {
-          name: 'Movie',
+          name: 'Test',
           description: null,
           is_active: true,
         },
       },
       {
         request: {
-          name: 'Movie',
+          name: 'Test',
           description: null,
         },
         expectedPresenter: {
-          name: 'Movie',
+          name: 'Test',
           description: null,
           is_active: true,
         },
       },
       {
         request: {
-          name: 'Movie',
+          name: 'Test',
           is_active: true,
         },
         expectedPresenter: {
-          name: 'Movie',
+          name: 'Test',
           description: null,
           is_active: true,
         },
       },
       {
         request: {
-          name: 'Movie',
+          name: 'Test',
           is_active: false,
         },
         expectedPresenter: {
-          name: 'Movie',
+          name: 'Test',
           description: null,
           is_active: false,
         },
       },
       {
         request: {
-          name: 'Movie',
-          description: 'description test',
+          name: 'Test',
+          description: 'Some description',
         },
         expectedPresenter: {
-          name: 'Movie',
-          description: 'description test',
+          name: 'Test',
+          description: 'Some description',
           is_active: true,
         },
       },
@@ -176,19 +176,20 @@ describe('CategoriesController Integration Tests', () => {
       async ({ request, expectedPresenter }) => {
         const presenter = await controller.update(category.id, request);
         const entity = await repository.findById(presenter.id);
-        // expect(entity).toMatchObject({
-        //   id: presenter.id,
-        //   name: expectedPresenter.name,
-        //   description: expectedPresenter.description,
-        //   is_active: expectedPresenter.is_active,
-        //   created_at: presenter.created_at,
-        // });
 
-        // expect(presenter.id).toBe(entity.id);
-        // expect(presenter.name).toBe(expectedPresenter.name);
-        // expect(presenter.description).toBe(expectedPresenter.description);
-        // expect(presenter.is_active).toBe(expectedPresenter.is_active);
-        // expect(presenter.created_at).toStrictEqual(entity.created_at);
+        expect(entity).toMatchObject({
+          id: presenter.id,
+          name: expectedPresenter.name,
+          description: expectedPresenter.description,
+          is_active: expectedPresenter.is_active,
+          created_at: presenter.created_at,
+        });
+
+        expect(presenter.id).toBe(entity.id);
+        expect(presenter.name).toBe(expectedPresenter.name);
+        expect(presenter.description).toBe(expectedPresenter.description);
+        expect(presenter.is_active).toBe(expectedPresenter.is_active);
+        expect(presenter.created_at).toStrictEqual(entity.created_at);
       },
     );
   });
@@ -265,7 +266,7 @@ describe('CategoriesController Integration Tests', () => {
       }
     });
 
-    it('should returns output using pagination, sort and filter', async () => {
+    it.skip('should returns output using pagination, sort and filter', async () => {
       const faker = Category.fake().aCategory();
       const categories = [
         faker.withName('a').build(),

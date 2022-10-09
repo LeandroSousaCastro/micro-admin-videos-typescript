@@ -11,15 +11,15 @@ describe('CategoryPresenter Unit Tests', () => {
       const created_at = new Date();
       const presenter = new CategoryPresenter({
         id: '61cd7b66-c215-4b84-bead-9aef0911aba7',
-        name: 'movie',
-        description: 'some description',
+        name: 'Test',
+        description: 'Some description',
         is_active: true,
         created_at,
       });
 
       expect(presenter.id).toBe('61cd7b66-c215-4b84-bead-9aef0911aba7');
-      expect(presenter.name).toBe('movie');
-      expect(presenter.description).toBe('some description');
+      expect(presenter.name).toBe('Test');
+      expect(presenter.description).toBe('Some description');
       expect(presenter.is_active).toBe(true);
       expect(presenter.created_at).toBe(created_at);
     });
@@ -29,8 +29,8 @@ describe('CategoryPresenter Unit Tests', () => {
     const created_at = new Date();
     const presenter = new CategoryPresenter({
       id: '61cd7b66-c215-4b84-bead-9aef0911aba7',
-      name: 'movie',
-      description: 'some description',
+      name: 'Test',
+      description: 'Some description',
       is_active: true,
       created_at,
     });
@@ -38,8 +38,8 @@ describe('CategoryPresenter Unit Tests', () => {
     const data = instanceToPlain(presenter);
     expect(data).toStrictEqual({
       id: '61cd7b66-c215-4b84-bead-9aef0911aba7',
-      name: 'movie',
-      description: 'some description',
+      name: 'Test',
+      description: 'Some description',
       is_active: true,
       created_at: created_at.toISOString(),
     });
@@ -54,8 +54,8 @@ describe('CategoryCollectionPresenter Unit Tests', () => {
         items: [
           {
             id: '61cd7b66-c215-4b84-bead-9aef0911aba7',
-            name: 'movie',
-            description: 'some description',
+            name: 'Test',
+            description: 'Some description',
             is_active: true,
             created_at,
           },
@@ -78,8 +78,8 @@ describe('CategoryCollectionPresenter Unit Tests', () => {
       expect(presenter.data).toStrictEqual([
         new CategoryPresenter({
           id: '61cd7b66-c215-4b84-bead-9aef0911aba7',
-          name: 'movie',
-          description: 'some description',
+          name: 'Test',
+          description: 'Some description',
           is_active: true,
           created_at,
         }),
@@ -93,8 +93,8 @@ describe('CategoryCollectionPresenter Unit Tests', () => {
       items: [
         {
           id: '61cd7b66-c215-4b84-bead-9aef0911aba7',
-          name: 'movie',
-          description: 'some description',
+          name: 'Test',
+          description: 'Some description',
           is_active: true,
           created_at,
         },
@@ -115,8 +115,8 @@ describe('CategoryCollectionPresenter Unit Tests', () => {
       data: [
         {
           id: '61cd7b66-c215-4b84-bead-9aef0911aba7',
-          name: 'movie',
-          description: 'some description',
+          name: 'Test',
+          description: 'Some description',
           is_active: true,
           created_at: created_at.toISOString(),
         },
@@ -127,8 +127,8 @@ describe('CategoryCollectionPresenter Unit Tests', () => {
       items: [
         {
           id: '61cd7b66-c215-4b84-bead-9aef0911aba7',
-          name: 'movie',
-          description: 'some description',
+          name: 'Test',
+          description: 'Some description',
           is_active: true,
           created_at,
         },
@@ -149,8 +149,8 @@ describe('CategoryCollectionPresenter Unit Tests', () => {
       data: [
         {
           id: '61cd7b66-c215-4b84-bead-9aef0911aba7',
-          name: 'movie',
-          description: 'some description',
+          name: 'Test',
+          description: 'Some description',
           is_active: true,
           created_at: created_at.toISOString(),
         },

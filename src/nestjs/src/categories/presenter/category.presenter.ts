@@ -24,11 +24,6 @@ export class CategoryPresenter {
 
 export class CategoryCollectionPresenter extends CollectionPresenter {
   data: CategoryPresenter[];
-  //sugestão de reuso
-  // constructor(output: CategoryOutput[], paginationProps){
-
-  // }
-
   constructor(output: ListCategoriesUseCase.Output) {
     const { items, ...paginationProps } = output;
     super(paginationProps);
