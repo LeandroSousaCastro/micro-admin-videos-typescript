@@ -1,4 +1,3 @@
-import { Category } from "#category/domain/entities/category";
 import { CategoryFakeBuilder } from "#category/domain/entities/category-fake-builder";
 import CategoryInMemoryRepository from "./category-in-memory.repository";
 

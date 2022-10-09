@@ -119,7 +119,3 @@ export abstract class InMemorySearchableRepository<E extends Entity>
     return items.slice(start, limit);
   }
 }
-
-//paginação -
-//ordenação - sort a > b 1 b > a -1 0
-//filtro -

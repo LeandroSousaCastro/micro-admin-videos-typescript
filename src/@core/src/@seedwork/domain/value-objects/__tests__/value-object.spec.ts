@@ -2,8 +2,6 @@ import ValueObject from "../value-object";
 
 class StubValueObject extends ValueObject {}
 
-//mock/spy - instancia fake
-//stub
 describe("ValueObject Unit Tests", () => {
   it("should set value", () => {
     let vo = new StubValueObject("string value");

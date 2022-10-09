@@ -5,7 +5,6 @@ import {
 import { Inject, Injectable } from '@nestjs/common';
 import { UpdateCategoryDto } from './dto/update-category.dto';
 
-//organizar a configuração e construção de serviços
 @Injectable()
 export class CategoriesService {
   @Inject(CreateCategoryUseCase.UseCase)

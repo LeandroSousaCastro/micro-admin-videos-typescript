@@ -1,9 +1,7 @@
-import { GetCategoryUseCase } from "../../get-category.use-case";
-import CategoryInMemoryRepository from "../../../../infra/db/in-memory/category-in-memory.repository";
-import NotFoundError from "../../../../../@seedwork/domain/errors/not-found.error";
-import { Category } from "../../../../domain/entities/category";
 import { CategorySequelize } from "#category/infra/db/sequelize/category-sequelize";
 import { setupSequelize } from "#seedwork/infra/testing/helpers/db";
+import NotFoundError from "../../../../../@seedwork/domain/errors/not-found.error";
+import { GetCategoryUseCase } from "../../get-category.use-case";
 
 const { CategoryRepository, CategoryModel } = CategorySequelize;
 
