@@ -27,7 +27,7 @@ export default {
   // collectCoverageFrom: undefined,
 
   // The directory where Jest should output its coverage files
-  coverageDirectory: "<rootDir>/../__coverage",
+  coverageDirectory: "../__coverage",
 
   // An array of regexp pattern strings used to skip coverage collection
   // coveragePathIgnorePatterns: [
@@ -143,7 +143,7 @@ export default {
   // A list of paths to modules that run some code to configure or set up the testing framework before each test
   setupFilesAfterEnv: [
     "./@seedwork/domain/tests/validations.ts",
-    "./@seedwork/domain/tests/jest.ts"
+    "./@seedwork/domain/tests/jest.ts",
   ],
 
   // The number of seconds after which a test is considered as slow and reported as such in the results.

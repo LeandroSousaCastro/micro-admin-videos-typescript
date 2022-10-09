@@ -4,7 +4,8 @@
         "model factory",
         "nest",
         "core",
-        "core test"
+        "core test",
+        "application"
     ],
     "workbench.colorCustomizations": {
         "activityBar.activeBorder": "#422c74",

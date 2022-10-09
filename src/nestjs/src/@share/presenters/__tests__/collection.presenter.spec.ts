@@ -16,14 +16,12 @@ describe('CollectionPresenter Unit Tests', () => {
         total: 4,
       });
 
-      expect(presenter['paginationPresenter']).toBeInstanceOf(
-        PaginationPresenter,
-      );
-      expect(presenter['paginationPresenter'].current_page).toBe(1);
-      expect(presenter['paginationPresenter'].per_page).toBe(2);
-      expect(presenter['paginationPresenter'].last_page).toBe(3);
-      expect(presenter['paginationPresenter'].total).toBe(4);
-      expect(presenter.meta).toEqual(presenter['paginationPresenter']);
+      expect(presenter['meta']).toBeInstanceOf(PaginationPresenter);
+      expect(presenter['meta'].current_page).toBe(1);
+      expect(presenter['meta'].per_page).toBe(2);
+      expect(presenter['meta'].last_page).toBe(3);
+      expect(presenter['meta'].total).toBe(4);
+      expect(presenter._meta).toEqual(presenter['meta']);
     });
   });
 
