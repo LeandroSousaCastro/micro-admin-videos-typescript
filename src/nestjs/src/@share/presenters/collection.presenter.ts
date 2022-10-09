@@ -6,15 +6,15 @@ import {
 
 export abstract class CollectionPresenter {
   @Exclude()
-  protected paginationPresenter: PaginationPresenter;
+  protected meta: PaginationPresenter;
 
   constructor(props: PaginationPresenterProps) {
-    this.paginationPresenter = new PaginationPresenter(props);
+    this.meta = new PaginationPresenter(props);
   }
 
   @Expose({ name: 'meta' })
-  get meta() {
-    return this.paginationPresenter;
+  get _meta() {
+    return this.meta;
   }
 
   abstract get data();
