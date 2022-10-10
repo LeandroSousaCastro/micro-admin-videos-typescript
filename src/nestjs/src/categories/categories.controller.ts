@@ -1,4 +1,5 @@
 import {
+  CategoryOutput,
   CreateCategoryUseCase,
   DeleteCategoryUseCase,
   GetCategoryUseCase,
@@ -46,7 +47,7 @@ export class CategoriesController {
   @Post()
   async create(@Body() createCategoryDto: CreateCategoryDto) {
     const output = await this.createUseCase.execute(createCategoryDto);
-    return new CategoryPresenter(output);
+    return CategoriesController.categoryToResponse(output);
   }
 
   @Get()
@@ -58,7 +59,7 @@ export class CategoriesController {
   @Get(':id')
   async findOne(@Param('id') id: string) {
     const output = await this.getUseCase.execute({ id });
-    return new CategoryPresenter(output);
+    return CategoriesController.categoryToResponse(output);
   }
 
   @Put(':id')
@@ -70,12 +71,16 @@ export class CategoriesController {
       id,
       ...updateCategoryDto,
     });
-    return new CategoryPresenter(output);
+    return CategoriesController.categoryToResponse(output);
   }
 
   @HttpCode(204)
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.deleteUseCase.execute({ id });
+  }
+
+  static categoryToResponse(output: CategoryOutput): CategoryPresenter {
+    return new CategoryPresenter(output);
   }
 }
