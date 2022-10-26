@@ -74,7 +74,7 @@ describe('CategoriesController Integration Tests', () => {
     );
   });
 
-  describe.skip('should update a category', () => {
+  describe('should update a category', () => {
     const category = Category.fake().aCategory().build();
     beforeEach(async () => {
       await repository.insert(category);
@@ -181,7 +181,7 @@ describe('CategoriesController Integration Tests', () => {
     expect(presenter.created_at).toStrictEqual(category.created_at);
   });
 
-  describe.skip('search method', () => {
+  describe('search method', () => {
     it('should returns categories using query empty ordered by created_at', async () => {
       const categories = Category.fake()
         .theCategories(4)
