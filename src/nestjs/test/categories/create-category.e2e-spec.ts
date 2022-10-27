@@ -66,7 +66,7 @@ describe('CategoriesController (e2e)', () => {
       });
     });
 
-    describe.skip('should a response errro with 422 when throw EntityValidationError', () => {
+    describe('should a response errro with 422 when throw EntityValidationError', () => {
       const app = startApp({
         beforeInit: (app) => {
           app['config'].globalPipes = [];

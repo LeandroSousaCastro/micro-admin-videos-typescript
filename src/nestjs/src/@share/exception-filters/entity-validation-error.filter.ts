@@ -11,7 +11,7 @@ export class EntityValidationErrorFilter implements ExceptionFilter {
 
     response.status(422).json({
       statusCode: 422,
-      error: 'Unprocessable entity',
+      error: 'Unprocessable Entity',
       message: union(...Object.values(exception.error)),
     });
   }

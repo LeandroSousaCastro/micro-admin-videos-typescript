@@ -37,7 +37,7 @@ describe('EntityValidationErrorFilter', () => {
       .expect(422)
       .expect({
         statusCode: 422,
-        error: 'Unprocessable entity',
+        error: 'Unprocessable Entity',
         message: ['field1 is required', 'field2 is required'],
       });
   });
