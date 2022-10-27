@@ -35,8 +35,44 @@ function startApp({
 describe('CategoriesController (e2e)', () => {
   const uuid = '9366b7dc-2d71-4799-b91c-c64adb205104';
 
-  describe('PUT /categories', () => {
+  describe('PUT /categories/:id', () => {
     const app = startApp();
+
+    describe('should a response error when id is invalid ao not found', () => {
+      const nestApp = startApp();
+      const categoryFaker = Category.fake().aCategory();
+      const arrange = [
+        {
+          id: uuid,
+          send_data: { name: categoryFaker.name },
+          expected: {
+            message: `Entity Not Found using ID ${uuid}`,
+            statusCode: 404,
+            error: 'Not Found',
+          },
+        },
+        {
+          id: 'fake-id',
+          send_data: { name: categoryFaker.name },
+          expected: {
+            message: 'Validation failed (uuid  is expected)',
+            statusCode: 422,
+            error: 'Unprocessable Entity',
+          },
+        },
+      ];
+      test.each(arrange)(
+        'when id is %id',
+        async ({ id, send_data, expected }) => {
+          return request(nestApp.app.getHttpServer())
+            .put(`/categories/${id}`)
+            .send(send_data)
+            .expect(expected.statusCode)
+            .expect(expected);
+        },
+      );
+    });
+
     describe('should a response errro with 422 when request body is invalid', () => {
       const insvalidRequest = UpdateCategoryFixture.arrangeInvalidRequest();
       const arrange = Object.keys(insvalidRequest).map((key) => ({
@@ -58,7 +94,8 @@ describe('CategoriesController (e2e)', () => {
           app['config'].globalPipes = [];
         },
       });
-      const validationError = UpdateCategoryFixture.arrangeForEntityValidationError();
+      const validationError =
+        UpdateCategoryFixture.arrangeForEntityValidationError();
       const arrange = Object.keys(validationError).map((key) => ({
         label: key,
         value: validationError[key],

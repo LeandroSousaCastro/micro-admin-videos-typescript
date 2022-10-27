@@ -9,3 +9,11 @@ services:
       - .:/home/node/app
     ports:
       - 3000:3000
+  
+  db:
+    image: mysql:8.0.30-debian
+    environment:
+      - MYSQL_DATABASE=micro-videos
+      - MYSQL_ROOT_PASSWORD=root
+    volumes:
+      - ./.docker/mysql/dbdata:/var/lib/mysql

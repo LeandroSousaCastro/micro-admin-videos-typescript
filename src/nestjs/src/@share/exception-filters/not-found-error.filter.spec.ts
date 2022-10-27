@@ -1,21 +1,22 @@
-import { EntityValidationError } from '@fc/micro-videos/@seedwork/domain';
+import { NotFoundError } from '@fc/micro-videos/@seedwork/domain';
 import { Controller, Get, INestApplication } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
-import { EntityValidationErrorFilter } from './entity-validation-error.filter';
+import { NotFoundErrorFilter } from './not-found-error.filter';
 import request from 'supertest';
 
 @Controller('stub')
 class StubController {
   @Get()
   index() {
-    throw new EntityValidationError({
-      field1: ['field1 is required'],
-      field2: ['field2 is required'],
-    });
+    throw new NotFoundError('fake not found error message');
   }
 }
 
-describe('EntityValidationErrorFilter Unit Test', () => {
+describe('NotFoundErrorFilter Unit Test', () => {
+  it('should be defined', () => {
+    expect(new NotFoundErrorFilter()).toBeDefined();
+  });
+
   let app: INestApplication;
 
   beforeEach(async () => {
@@ -23,22 +24,22 @@ describe('EntityValidationErrorFilter Unit Test', () => {
       controllers: [StubController],
     }).compile();
     app = moduleFixture.createNestApplication();
-    app.useGlobalFilters(new EntityValidationErrorFilter());
+    app.useGlobalFilters(new NotFoundErrorFilter());
     await app.init();
   });
 
   it('should be defined', () => {
-    expect(new EntityValidationErrorFilter()).toBeDefined();
+    expect(new NotFoundErrorFilter()).toBeDefined();
   });
 
   it('should catch a EntityValidaionError', () => {
     return request(app.getHttpServer())
       .get('/stub')
-      .expect(422)
+      .expect(404)
       .expect({
-        statusCode: 422,
-        error: 'Unprocessable Entity',
-        message: ['field1 is required', 'field2 is required'],
+        statusCode: 404,
+        error: 'Not Found',
+        message: 'fake not found error message',
       });
   });
 });
