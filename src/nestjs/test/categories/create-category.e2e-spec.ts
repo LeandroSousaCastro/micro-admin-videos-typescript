@@ -1,37 +1,11 @@
 import { CategoryRepository } from '@fc/micro-videos/category/domain';
-import { INestApplication } from '@nestjs/common';
 import { getConnectionToken } from '@nestjs/sequelize';
-import { Test, TestingModule } from '@nestjs/testing';
 import { instanceToPlain } from 'class-transformer';
+import { startApp } from '../../src/@share/testing/helpers';
 import request from 'supertest';
-import { AppModule } from '../../src/app.module';
 import { CategoriesController } from '../../src/categories/categories.controller';
 import { CATEGORY_PROVIDERS } from '../../src/categories/category.providers';
 import { CategoryFixture } from '../../src/categories/__tests__/fixtures';
-import { applyGlobalConfig } from '../../src/global-config';
-
-function startApp({
-  beforeInit,
-}: { beforeInit?: (app: INestApplication) => void } = {}) {
-  let _app: INestApplication;
-
-  beforeEach(async () => {
-    const moduleFixture: TestingModule = await Test.createTestingModule({
-      imports: [AppModule],
-    }).compile();
-
-    _app = moduleFixture.createNestApplication();
-    applyGlobalConfig(_app);
-    beforeInit && beforeInit(_app);
-    await _app.init();
-  });
-
-  return {
-    get app() {
-      return _app;
-    },
-  };
-}
 
 describe('CategoriesController (e2e)', () => {
   describe('POST /categories', () => {
