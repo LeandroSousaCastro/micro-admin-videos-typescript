@@ -37,4 +37,4 @@ import { CategorySequelize } from '@fc/micro-videos/category/infra';
     }),
   ],
 })
-export class DatabaseModule {}
+export class DatabaseModule { }

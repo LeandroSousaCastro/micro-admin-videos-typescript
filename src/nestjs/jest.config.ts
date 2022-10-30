@@ -4,6 +4,7 @@ export default {
     color: 'magentaBright',
   },
   moduleFileExtensions: ['js', 'json', 'ts'],
+  rootDir: 'src',
   testRegex: '.*\\..*spec\\.ts$',
   transform: {
     '^.+\\.(t|j)s$': '@swc/jest',
@@ -14,13 +15,13 @@ export default {
   testEnvironment: 'node',
   moduleNameMapper: {
     '@fc/micro\\-videos/(.*)$':
-      '<rootDir>/../../node_modules/@fc/micro-videos/dist/$1',
+      '<rootDir>/../../../node_modules/@fc/micro-videos/dist/$1',
     '#seedwork/(.*)$':
-      '<rootDir>/../../node_modules/@fc/micro-videos/dist/@seedwork/$1',
+      '<rootDir>/../../../node_modules/@fc/micro-videos/dist/@seedwork/$1',
     '#category/(.*)$':
-      '<rootDir>/../../node_modules/@fc/micro-videos/dist/category/$1',
+      '<rootDir>/../../../node_modules/@fc/micro-videos/dist/category/$1',
   },
-  setupFilesAfterEnv: ['../@core/src/@seedwork/domain/tests/jest.ts'],
+  setupFilesAfterEnv: ['../../@core/src/@seedwork/domain/tests/jest.ts'],
   coverageThreshold: {
     global: {
       statements: 80,

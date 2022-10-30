@@ -1,5 +1,6 @@
 import { Category, CategoryRepository } from '@fc/micro-videos/category/domain';
 import { INestApplication } from '@nestjs/common';
+import { getConnectionToken } from '@nestjs/sequelize';
 import { Test, TestingModule } from '@nestjs/testing';
 import { instanceToPlain } from 'class-transformer';
 import request from 'supertest';
@@ -121,10 +122,12 @@ describe('CategoriesController (e2e)', () => {
       const app = startApp();
       const arrange = UpdateCategoryFixture.arrangeForSave();
       let categoryRepository: CategoryRepository.Repository;
-      beforeEach(() => {
+      beforeEach(async () => {
         categoryRepository = app.app.get<CategoryRepository.Repository>(
           CATEGORY_PROVIDERS.REPOSITORIES.CATEGORY_REPOSITORY.provide,
         );
+        const sequelize = app.app.get(getConnectionToken());
+        await sequelize.sync({ force: true });
       });
       test.each(arrange)(
         'when body is $send_data',

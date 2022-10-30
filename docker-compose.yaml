@@ -12,8 +12,20 @@ services:
   
   db:
     image: mysql:8.0.30-debian
+    container_name: db
+    profiles:
+      - dev
     environment:
       - MYSQL_DATABASE=micro_videos
       - MYSQL_ROOT_PASSWORD=root
     volumes:
       - ./.docker/mysql/dbdata:/var/lib/mysql:delegated
+
+  db_test:
+    image: mysql:8.0.30-debian
+    container_name: db_test
+    environment:
+      - MYSQL_DATABASE=micro_videos
+      - MYSQL_ROOT_PASSWORD=root
+    tmpfs:
+      - /var/lib/mysql

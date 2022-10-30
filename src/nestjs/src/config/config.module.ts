@@ -51,8 +51,8 @@ export class ConfigModule extends NestConfigModule {
         ...(Array.isArray(options.envFilePath)
           ? options.envFilePath
           : [options.envFilePath]),
-        join(__dirname, `../envs/.env.${process.env.NODE_ENV}`),
-        join(__dirname, '../envs/.env'),
+        join(__dirname, `../../envs/.env.${process.env.NODE_ENV}`),
+        join(__dirname, '../../envs/.env'),
       ],
       validationSchema: Joi.object(CONFIG_DB_SCHEMA),
       ...options,
